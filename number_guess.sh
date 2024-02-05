@@ -27,7 +27,6 @@ done
 fi
 
 NUMBER=$(($RANDOM % 1000 + 1))
-NUMBER=12
 GUESSES=0
 
 
