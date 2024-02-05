@@ -22,3 +22,7 @@ do
 echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 done
 fi
+
+NUMBER=$(($RANDOM % 1000 + 1))
+
+echo "Guess the secret number between 1 and 1000:"
