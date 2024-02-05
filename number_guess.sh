@@ -14,6 +14,9 @@ if [[ -z $USER_ID_RESULT ]]
 then
 INSERT_USER_RESULT=$($PSQL "INSERT INTO users(name) VALUES('$USERNAME')")
 USER_ID_RESULT=$($PSQL "SELECT user_id FROM users WHERE name = '$USERNAME'")
+INSERT_INTO_GAMES_RESULT=$($PSQL "INSERT INTO games(user_id, games_played, best_game_guesses) VALUES($USER_ID_RESULT, 0, 0)")
+
+
 echo "Welcome, $USERNAME! It looks like this is your first time here."
 else
 GAMES_INFO=$($PSQL "SELECT games_played, best_game_guesses FROM games WHERE user_id = $USER_ID_RESULT")
@@ -47,3 +50,21 @@ fi
 ((GUESSES+=1))
 done
 echo "You guessed it in $GUESSES tries. The secret number was $NUMBER. Nice job!"
+
+#UPDATE into stuff
+
+
+
+echo $GAMES_INFO | while read GAMES_PLAYED BAR BEST_GAME
+do
+
+if [[ $BEST_GAME -eq 0 || $BEST_GAME < $GUESSES ]]
+then 
+BEST_GAME=$GUESSES
+fi
+((GAMES_PLAYED+=1))
+UPDATE_RESULT=$($PSQL "UPDATE games SET games_played = $GAMES_PLAYED, best_game_guesses = $BEST_GAME WHERE user_id = $USER_ID_RESULT")
+done
+
+
+
